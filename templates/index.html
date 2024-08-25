@@ -1,0 +1,50 @@
+templates/index.html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EngAssemLang IDE</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #editor { height: 300px; width: 600px; }
+        .container { margin: 20px; }
+        .button { padding: 10px 20px; margin-top: 10px; }
+        .output { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="editor">declare int x = 10; mov eax, x; if x is greater than 5 then print "x is large"; else print "x is small";</div>
+        <button class="button" onclick="executeCode()">Execute</button>
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/javascript");
+
+        function executeCode() {
+            var code = editor.getValue();
+            fetch('/execute', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var outputDiv = document.getElementById('output');
+                outputDiv.innerHTML = "<strong>Status:</strong> " + data.status + "<br>" +
+                                      "<strong>Output:</strong> " + data.output + "<br>" +
+                                      "<strong>Suggestions:</strong> " + JSON.stringify(data.suggestions);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
