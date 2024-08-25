@@ -1,6 +1,6 @@
 # EAL-Environment
 runtime for English Assembly Language
-Certainly! Here’s a comprehensive and expansive overview of the upgraded codebase, outlining its architecture, features, and enhancements:
+Here’s a comprehensive and expansive overview of the upgraded codebase, outlining its architecture, features, and enhancements:
 
 ---
 
